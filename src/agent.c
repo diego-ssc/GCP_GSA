@@ -18,6 +18,7 @@
  */
 
 #include <stdlib.h>
+#include <float.h>
 
 #include "agent.h"
 
@@ -43,6 +44,8 @@ Agent* agent_new(int x, int y) {
   agent->y       = y;
   agent->color   = 0;
   agent->comfort = 0;
+
+  return agent;
 }
 
 
@@ -59,4 +62,38 @@ int agent_comfort(Agent* agent) {
 /* Returns the color of the agent. */
 Color* agent_color(Agent* agent) {
   return agent->color;
+}
+
+/* Computes the velocity of the agent. */
+double agent_velocity(Agent* agent, Color** colors,
+                      int color_n) {
+  Colot *c;
+
+  if (!agent->agent) {
+    c = agent_nearest_color(agent, colors, color_n);
+    return agent_distance(agent, c) * color_attraction(color, agent);
+  }
+
+  return 0;
+}
+
+double agent_distance(Agent* agent, Color* color) {
+  return sqrt(pow(fabs(agent->x - color_x(color)), 2) +
+              pow(fabs(agent->y - color_y(color)), 2));
+}
+
+Color* agent_nearest_color(Agent* agent, Color** colors,
+                           int color_n) {
+  int i;
+  double d = DBL_MAX;
+  Color* c;
+
+  for (i = 0; i < color_n; ++i) {
+    if (d >= agent_distance(agent, *(colors+i))) {
+      d = agent_distance(agent, *(colors+i));
+      c = *(colors+i);
+    }
+  }
+
+  return c;
 }

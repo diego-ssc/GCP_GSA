@@ -19,7 +19,7 @@
 
 #include <stdlib.h>
 
-#include "heuristic.h"
+#include "color.h"
 
 /* The color structure */
 struct _Color {
@@ -44,4 +44,17 @@ Color* color_new(int x, int y) {
 /* Frees the memory used by the color. */
 void color_free(Color* color) {
   free(color);
+}
+
+/* Returns the x coordinate of the color. */
+int color_x(Color* color) {
+  return color->x;
+}
+
+/* Returns the y coordinate of the color. */
+int color_y(Color* color) {
+  return color->y;
+}
+
+double color_attraction(Color* color, Agent* agent) {
 }
