@@ -22,21 +22,28 @@
 #include "heuristic.h"
 
 /**
- * Creates a new GSA.
- * @param graph the graph.
- * @param seedval the seed.
+ * Creates a new Vector.
+ * @param v_1 the first component.
+ * @param v_2 the second component.
  */
-GSA* gsa_new(Graph* graph, long int seedval);
+Vector* vector_new(double v_1, double v_2);
 
 /**
- * Frees the memory used by the GSA.
- * @param gsa the gravitational search algorithm.
+ * Frees the memory used by the vector.
+ * @param vector the vector.
  */
-void gsa_free(GSA* gsa);
+void vector_free(Vector* vector);
 
 /**
- * Frees the memory used by the GSA.
- * @param gsa the gravitational search algorithm.
- * @return the cost.
+ * Computes the magnitude of the vector.
+ * @param vector the vector.
+ * @return the vector magnitude.
  */
-int gsa_cost_function(GSA* gsa);
+double vector_magnitude(Vector* vector);
+
+/**
+ * Computes the vector angle in degrees.
+ * @param vector the vector.
+ * @return the vector angle.
+ */
+double vector_angle(Vector* vector);

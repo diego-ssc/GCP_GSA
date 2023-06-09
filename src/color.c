@@ -56,5 +56,7 @@ int color_y(Color* color) {
   return color->y;
 }
 
+/* Returns the color attraction related to the agent. */
 double color_attraction(Color* color, Agent* agent) {
+  return 0;
 }

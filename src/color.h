@@ -45,3 +45,11 @@ int color_x(Color* color);
  * @return the y coordinate.
  */
 int color_y(Color* color);
+
+/**
+ * Returns the color attraction related to the agent.
+ * @param color
+ * @param agent
+ * @return
+ */
+double color_attraction(Color* color, Agent* agent);

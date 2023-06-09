@@ -1,5 +1,5 @@
 /*
- * This file is part of kMST_AIG.
+ * This file is part of GCP_GSA.
  *
  * Copyright © 2023 Diego Sebastián Sánchez Correa
  *

@@ -18,36 +18,41 @@
  */
 
 #include <stdlib.h>
+#include <math.h>
 
-#include "gsa.h"
+#include "vector.h"
 
-/* The GSA structure. */
-struct _GSA {
-  /* RNG buffer. */
-  struct drand48_data *buffer;
+/* The Vector structure. */
+struct _Vector {
+  /* The first component. */
+  double v_1;
+  /* The second component. */
+  double v_2;
 };
 
-/* Creates a new GSA. */
-GSA* gsa_new(Graph* graph, long int seedval) {
+/* Creates a new Vector. */
+Vector* vector_new(double v_1, double v_2) {
   /* Heap allocation. */
-  GSA* gsa = malloc(sizeof(struct _GSA));
+  Vector* vector = malloc(sizeof(struct _Vector));
 
-  /* RNG. */
-  gsa->buffer = malloc(sizeof(struct drand48_data));
-  srand48_r(seedval, gsa->buffer);
+  /* Heap initialization. */
+  vector->v_1 = v_1;
+  vector->v_2 = v_2;
 
-  return gsa;
+  return vector;
 }
 
-/* Frees the memory used by the GSA. */
-void gsa_free(GSA* gsa) {
-  if (gsa->buffer)
-    free(gsa->buffer);
-
-  free(gsa);
+/* Frees the memory used by the vector. */
+void vector_free(Vector* vector) {
+  free(vector);
 }
 
-/* Frees the memory used by the GSA. */
-int gsa_cost_function(GSA* gsa) {
-  return 0;
+/* Computes the magnitude of the vector. */
+double vector_magnitude(Vector* vector) {
+  return sqrt(pow(vector->v_1, 2) + pow(vector->v_2, 2));
+}
+
+/* Computes the vector angle in degrees. */
+double vector_angle(Vector* vector) {
+  return cosh(vector->v_1 / vector_magnitude(vector)); 
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of kMST_AIG.
+ * This file is part of GCP_GSA.
  *
  * Copyright © 2023 Diego Sebastián Sánchez Correa
  *
@@ -18,6 +18,8 @@
  */
 
 #pragma once
+
+#include <stdlib.h>
 
 /**
  * The Agent opaque structure.
@@ -49,9 +51,15 @@ typedef struct _Graph Graph;
  */
 typedef struct _Color Color;
 
+/**
+ * The Vector opaque structure.
+ */
+typedef struct _Vector Vector;
+
 #include "agent.h"
 #include "input_parser.h"
 #include "gsa.h"
 #include "gcp.h"
 #include "graph.h"
 #include "color.h"
+#include "vector.h"

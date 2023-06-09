@@ -16,7 +16,8 @@ src = [
   'src/gsa.c',
   'src/agent.c',
   'src/color.c',
-  'src/graph.c'
+  'src/graph.c',
+  'src/vector.c'
 ]
 
 includes = include_directories('src/')
