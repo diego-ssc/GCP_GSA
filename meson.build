@@ -12,7 +12,6 @@ thread_dep = dependency('threads')
 src = [
   'src/main.c',
   'src/input_parser.c',
-  'src/gcp.c',
   'src/gsa.c',
   'src/agent.c',
   'src/color.c',

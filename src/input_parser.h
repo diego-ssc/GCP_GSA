@@ -17,4 +17,26 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include "heuristic.h"
+
+/**
+ * Creates a new Input Parser.
+ * @param file_n the file name.
+ * @param buffer the RNG buffer.
+ */
+Input_parser* input_parser_new(char* file_n, struct drand48_data *buffer);
+
+/**
+ * Frees the memory used by the Input parser.
+ * @param parser the parser.
+ */
+void input_parser_free(Input_parser* parser);
+
+/**
+ * Parses the input.
+ * @param parser the parser.
+ * @return the graph.
+ */
+Graph* input_parser_parse(Input_parser* parser);

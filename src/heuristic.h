@@ -56,10 +56,14 @@ typedef struct _Color Color;
  */
 typedef struct _Vector Vector;
 
+/**
+ * The Vertex opaque structure.
+ */
+typedef struct _Vertex Vertex;
+
 #include "agent.h"
 #include "input_parser.h"
 #include "gsa.h"
-#include "gcp.h"
 #include "graph.h"
 #include "color.h"
 #include "vector.h"

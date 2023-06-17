@@ -27,7 +27,7 @@
  * @param y the y coordinate.
  * @param buffer the RNG buffer.
  */
-Agent* agent_new(int x, int y, struct drand48_data *buffer);
+Agent* agent_new(double x, double y, struct drand48_data *buffer);
 
 /**
  * Frees the memory used by the agent.
@@ -50,12 +50,26 @@ int agent_comfort(Agent* agent);
 Color* agent_color(Agent* agent);
 
 /**
+ * Returns the node of the agent.
+ * @param agent the agent.
+ * @return the node.
+ */
+int agent_node(Agent* agent);
+
+/**
  * Computes the agent distance from the determined color.
  * @param agent the agent.
  * @param color the color.
  * @return the distance.
  */
 double agent_distance(Agent* agent, Color* color);
+
+/**
+ * Sets the comfort of the agent.
+ * @param agent the agent.
+ * @param comfort the comfort.
+ */
+void agent_set_comfort(Agent* agent, int comfort);
 
 /**
  * Computes the nearest color to the agent.

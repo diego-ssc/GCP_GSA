@@ -19,4 +19,67 @@
 
 #include "heuristic.h"
 
+/**
+ * Returns a new Graph.
+ * @param buffer the RNG buffer.
+ * @param elements the matrix of elements.
+ * @param n the number of elements.
+ * @param d the dimensions of the world.
+ */
+Graph* graph_new(struct drand48_data *buffer, int** elements, int n, double d);
 
+/**
+ * Frees the memory used by the graph.
+ * @param graph the graph.
+ */
+void graph_free(Graph* graph);
+
+/**
+ * Returns the x coordinate of the vertex.
+ * @param the vertex.
+ * @return the x coordinate.
+ */
+double vertex_x(Vertex* vertex);
+
+/**
+ * Returns the y coordinate of the vertex.
+ * @param the vertex.
+ * @return the y coordinate.
+ */
+double vertex_y(Vertex* vertex);
+
+/**
+ * Returns the index of the vertex.
+ * @param vertex the vertex.
+ * @return the index.
+ */
+double vertex_i(Vertex* vertex);
+
+/**
+ * Returns the string representation of the vertex.
+ * @param vertex the vertex.
+ * @return the string representation.
+ */
+char* vertex_to_string(Vertex* vertex);
+
+/**
+ * Returns the vertices of the graph.
+ * @param graph the graph.
+ * @return the vertices.
+ */
+Vertex** graph_vertices(Graph* graph);
+
+/**
+ * Returns the number of nodes.
+ * @param graph the graph.
+ * @return the number of nodes.
+ */
+int graph_n(Graph* graph);
+
+/**
+ * Returns 1 if the two nodes are connectes; 0, otherwise.
+ * @param graph the graph.
+ * @param n the first node.
+ * @param m the second node.
+ */
+int graph_are_connected(Graph* graph, int n, int m);

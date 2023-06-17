@@ -24,13 +24,16 @@
 #include "agent.h"
 
 #define MAX_VELOCITY 50
+#define MAX_DISTANCE 100
 
 /* The Agent structure. */
 struct _Agent {
   /* The x coordinate. */
-  int x;
+  double x;
   /* The y coordinate. */
-  int y;
+  double y;
+  /* The node. */
+  int n;
   /* The comfort. */
   int comfort;
   /* The color. */
@@ -42,7 +45,7 @@ struct _Agent {
 };
 
 /* Creates a new Agent. */
-Agent* agent_new(int x, int y, struct drand48_data *buffer) {
+Agent* agent_new(double x, double y, struct drand48_data *buffer) {
   /* Heap allocation. */
   Agent* agent = malloc(sizeof(struct _Agent));
 
@@ -73,34 +76,48 @@ Color* agent_color(Agent* agent) {
   return agent->color;
 }
 
-/* Computes the velocity of the agent. */
+/* Returns the node of the agent. */
+int agent_node(Agent* agent) {
+  return agent->n;
+}
+
+/* Computes the vector of the agent. */
 Vector* agent_vector(Agent* agent, Color** colors,
-                      int color_n) {
+                     int color_n) {
   Color *c;
   double a, b;
 
   drand48_r(agent->buffer, &a);
+
+  /* Random magnitude. */
+  double r_m = a;
+
+  drand48_r(agent->buffer, &a);
   drand48_r(agent->buffer, &b);
-  /* Random vector. */
-  Vector* r_vector = vector_new(a, b);
+
+  /* Random position. */
+  Vector* r_pos = vector_new(MAX_DISTANCE*a, MAX_DISTANCE*b);
 
   if (!agent->color) {
     c = agent_nearest_color(agent, colors, color_n);
-    /* return agent_distance(agent, c) * color_attraction(agent->color, agent); */
-    return 0;
+    return s_mult(color_attraction(agent->color, agent), agent_distance(agent, c));
   }
 
-  if (0 == agent->comfort)  {
-    drand48_r(agent->buffer, &a);
-    return 0;
+  if (0 == agent->comfort) {
+    return s_mult(r_pos, MAX_DISTANCE*r_m);
     }
-  
+
   return 0;
 }
 
 double agent_distance(Agent* agent, Color* color) {
   return sqrt(pow(fabs(agent->x - color_x(color)), 2) +
               pow(fabs(agent->y - color_y(color)), 2));
+}
+
+/* Sets the comfort of the agent. */
+void agent_set_comfort(Agent* agent, int comfort) {
+  agent->comfort = comfort;
 }
 
 Color* agent_nearest_color(Agent* agent, Color** colors,

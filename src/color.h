@@ -47,9 +47,31 @@ int color_x(Color* color);
 int color_y(Color* color);
 
 /**
- * Returns the color attraction related to the agent.
- * @param color
- * @param agent
- * @return
+ * Returns the attraction force related to the agent.
+ * @param color the color.
+ * @param agent the agent.
+ * @return the attraction force of the color.
  */
-double color_attraction(Color* color, Agent* agent);
+Vector* color_attraction(Color* color, Agent* agent);
+
+/**
+ * Returns 0 if the agent is under influence radius of the color.
+ * @param color the color.
+ * @param agent the agent.
+ */
+int color_in(Color* color, Agent* agent);
+
+/**
+ * Returns 1 if the color was visitied in the most recent
+ * operation; or 0, otherwise.
+ * @param color the color.
+ * @return the status.
+ */
+int color_visited(Color* color);
+
+/**
+ * Sets the status that tells if a color was visited.
+ * @param color the color.
+ * @param status the status.
+ */
+void color_set_visited(Color* color, int status);

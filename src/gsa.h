@@ -35,8 +35,21 @@ GSA* gsa_new(Graph* graph, long int seedval);
 void gsa_free(GSA* gsa);
 
 /**
+ * Creates the agents of the problem.
+ * @param gsa the gravitational search algorithm.
+ * @return the agents.
+ */
+Agent** gsa_agents(GSA* gsa);
+
+/**
  * Frees the memory used by the GSA.
  * @param gsa the gravitational search algorithm.
  * @return the cost.
  */
 int gsa_cost_function(GSA* gsa);
+
+/**
+ * Computes the heuristic.
+ * @param gsa the gravitational search algorithm.
+ */
+void gsa(GSA* gsa);

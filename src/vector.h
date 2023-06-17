@@ -47,3 +47,11 @@ double vector_magnitude(Vector* vector);
  * @return the vector angle.
  */
 double vector_angle(Vector* vector);
+
+/**
+ * Computes the scalar multiplication.
+ * @param vector the vector.
+ * @param sc the scalar.
+ * @return the result vector.
+ */
+Vector* s_mult(Vector* vector, double sc);

@@ -54,5 +54,13 @@ double vector_magnitude(Vector* vector) {
 
 /* Computes the vector angle in degrees. */
 double vector_angle(Vector* vector) {
-  return cosh(vector->v_1 / vector_magnitude(vector)); 
+  return cosh(vector->v_1 / vector_magnitude(vector));
+}
+
+/* Computes the scalar multiplication. */
+Vector* s_mult(Vector* vector, double sc) {
+  vector->v_1 *= sc;
+  vector->v_2 *= sc;
+
+  return vector;
 }

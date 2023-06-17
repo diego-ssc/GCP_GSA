@@ -17,9 +17,24 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+
 #include "heuristic.h"
+
 
 /* Executes the main thread of the program. */
 int main(int argc, char** argv) {
-  return 0;
+  struct drand48_data *buffer = malloc(sizeof(struct drand48_data));
+  long int seedval = 1;
+  srand48_r(seedval, buffer);
+  Input_parser* parser = input_parser_new("file.txt", buffer);
+  Graph* graph = input_parser_parse(parser);
+
+  int i;
+  for (i = 0; i < graph_n(graph); ++i)
+    printf("%s\n", vertex_to_string(*(graph_vertices(graph) + i)));
+  
+  graph_free(graph);
+  free(buffer);
+  input_parser_free(parser);
 }

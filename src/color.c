@@ -21,12 +21,16 @@
 
 #include "color.h"
 
+#define NEAR_ENOUGH 4
+
 /* The color structure */
 struct _Color {
   /* The x coordinate. */
   int x;
   /* The y coordinate. */
   int y;
+  /* Tells if the color was visited. */
+  int c_v;
 };
 
 /* Creates a new color. */
@@ -56,7 +60,25 @@ int color_y(Color* color) {
   return color->y;
 }
 
-/* Returns the color attraction related to the agent. */
-double color_attraction(Color* color, Agent* agent) {
-  return 0;
+/* Returns the attraction force related to the agent. */
+Vector* color_attraction(Color* color, Agent* agent) {
+  Vector* vector = vector_new(0, 0);
+  return vector;
+}
+
+/* Returns 1 if the agent is under the influence of the color;
+   0, otherwise. */
+int color_in(Color* color, Agent* agent) {
+  return agent_distance(agent, color) <= NEAR_ENOUGH;
+}
+
+/* Returns 1 if the color was visitied in the most recent
+ operation; or 0, otherwise. */
+int color_visited(Color* color) {
+  return color->c_v;
+}
+
+/* Sets the status that tells if a color was visited. */
+void color_set_visited(Color* color, int status) {
+  color->c_v = status;
 }
