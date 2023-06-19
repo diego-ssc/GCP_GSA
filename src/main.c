@@ -18,23 +18,73 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "heuristic.h"
 
+/* Prints the execution intructions of the program. */
+static void usage() {
+  fprintf(stderr, "Usage:\n\t./GCP_GSA"
+          " -f [input file] [options]\n\n");
+  fprintf(stderr, "Options:\n"
+          "\t-s\n\t\tthe seed\n"
+          "\t-n\n\t\tthe expected chromatic number\n"
+          "\t-d\n\t\tthe graph dimension\n"
+          "\t-i\n\t\tthe number of iterations\n"
+          "\t-c\n\t\tthe comfort\n");
+  exit(1);
+}
+
+/* Parses the arguments passed to the program. */
+void parse_arguments(int argc, char** argv) {
+  if (argc < 3)
+    usage();
+
+  int n = 0, i = 0, c = 0, f = 0;
+  double d = 0;
+  long int s = 0;
+  char f_n[100];
+
+  while (--argc > 0)
+    if ((*++argv)[0] == '-')
+      while ((c = *++argv[0]))
+        switch (c) {
+        case 'n':
+          n = argc - 1 ? atoi(*(argv + 1)) : n;
+          break;
+        case 'f':
+          if (argc - 1)
+            strcpy(f_n, *(argv + 1));
+          f++;
+          break;
+        case 's':
+          s = argc - 1 ? atoi(*(argv + 1)) : s;
+          break;
+        case 'i':
+          i = argc - 1 ? atoi(*(argv + 1)) : i;
+          break;
+        case 'c':
+          c = argc - 1 ? atoi(*(argv + 1)) : c;
+          break;
+        case 'd':
+          d = argc - 1 ? atof(*(argv + 1)) : d;
+          break;
+        default:
+          fprintf(stderr, "GCP_GSA: illegal option %c\n", c);
+          argc = 0;
+          break;
+        }
+
+  if (!f)
+    usage();
+
+  GSA* gsa = gsa_new(f_n, s, n, d, i, c);
+  printf("Solution found: %d\n", gsa_heuristic(gsa));
+  gsa_free(gsa);
+}
 
 /* Executes the main thread of the program. */
 int main(int argc, char** argv) {
-  struct drand48_data *buffer = malloc(sizeof(struct drand48_data));
-  long int seedval = 1;
-  srand48_r(seedval, buffer);
-  Input_parser* parser = input_parser_new("file.txt", buffer);
-  Graph* graph = input_parser_parse(parser);
-
-  int i;
-  for (i = 0; i < graph_n(graph); ++i)
-    printf("%s\n", vertex_to_string(*(graph_vertices(graph) + i)));
-  
-  graph_free(graph);
-  free(buffer);
-  input_parser_free(parser);
+  parse_arguments(argc, argv);
+  return 0;
 }

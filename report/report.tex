@@ -43,11 +43,203 @@
 \allowdisplaybreaks
 \maketitle
 
-\chapter{Introducci\'on}\
+\chapter{Introducci\'on}
+El problema de coloraci\'on de gr\'aficas, espec\'ificamente la modalidad que involucra
+la b\'usqueda del n\'umero crom\'atico de la gr\'afica, es uno de los problemas NP-duros
+que tienen una gran aplicaci\'on en la resoluci\'on de problemas del mundo real.
+
+Una de estas es la optimizaci\'on del uso de los registros disponibles en un procesador
+para la ejecuci\'on de un algoritmo; problema para el que es encontrado r\'apidamente
+una aproximaci\'on por los compiladores pero del cual, sin embargo, no se puede garantizar
+una soluci\'on \'optima, dada la naturaleza del problema.
 
 \section{El problema}
+Una gr\'afica se define como una par ordenado compuesto de un conjunto de v\'ertices $V$ y
+un conjunto de aristas $E$, es decir, una gr\'afica es representada como sigue
+\[G =  (V, E)\]
+
+donde
+
+\begin{align*}
+  V &= \{v_1, ..., v_n\}\\
+  E &\subseteq V \times V
+\end{align*}
+
+El problema es planteado sobre una gr\'afica no dirigida, es decir, donde se tiene que
+\[(v, w) \in E \Rightarrow (w, v) \in E\]
+
+El vecindaro de un v\'ertice se define como todos los v\'ertices para los cuales existe
+una arista que los une, es decir
+
+\[N(v) = \{w \in V \ | \ (v, w) \in E\}\]
+
+El problema de coloraci\'on de gr\'aficas pregunta cu\'al es la mejor asignaci\'on de
+colores para cada uno de los v\'ertices contenidos en la gr\'afica que minimice el
+n\'umero de colores usados, cumpliendo en todo caso que dos colores adyacentes no
+compartan el mismo color.
+
+El n\'umero crom\'atico define, dada una gr\'afica no dirigida, el n\'umero de colores
+m\'inimo que debe tener para colorearla por completo.
+Dadas las condiciones del problema, es posible obtener m\'ultiples soluciones, ninguna
+de ellas pudiendo llamarse la m\'as \'optima (derivado de la naturaleza no determinista
+del problema).
 
 \section{La heur\'istica}
+La heur\'istica de b\'usqueda gravitacional (GSA) propone un modelo de b\'usqueda que
+sigue un patr\'on de enjambre, es decir, no existe un solo agente que realice la
+b\'usqueda; esta se divide entre diversos entes que permiten una mayor exploraci\'on
+y, eventualmente, una mayor explotaci\'on.
+
+\begin{center}
+  \textit{La inteligencia de enjambre es un modelo donde el comportamiento colectivo
+    emergente is el resultado de un proceso de organizaci\'on personal, donde los
+    agentes est\'an envueltos, a trav\'es sus acciones repetidas e interacci\'on,
+    com su ambiente en evoluci\'on. ~\cite{israel}}
+\end{center}
+
+Modelos de este tipo son bastante populares; entre ellos se encuentran PSO (Eberhart
+and Kennedy, 1995), ACS (M. Dorigo and V. Maniezzo, 2008), etc\'etera.
+
+En esta heur\'istica se plantea el uso de entes (soluciones) que
+se afectan m\'utuamente a trav\'es de fen\'omenos f\'isicos, siguiendo las leyes
+de Newton.
+
+\begin{center}
+  \textit{En el algoritmo propuesto los agentes que buscan son una colecci\'on de masas
+    que interact\'uan entre s\'i bas\'andose en la gravedad Newtoniana y las leyes
+    del movimiento. ~\cite{gsa}}
+\end{center}
+
+A pesar de ser esta una de las primeras concepciones de los fen\'omenos como soluciones
+a problemas combinatorios, se usar\'a una variaci\'on que lo ha tenido como
+inspiraci\'on y es descrito en ~\cite{israel}.
+
+Se define un conjunto de agentes
+
+\[B = \{b_1, b_2, ... b_N\}\]
+
+correspondientes a la cada nodo de la gr\'afica. Cada agente navegar\'a sobre un
+mundo t\'orico \footnote{Un toro es \textit{la colecci\'on de todos los puntos
+    $(x, y) \in \mathbb{R}^2$ bajo la relaci\'on de equivalencia $(x, y) \sim
+    (a, b)$ cuando $x - a, y-b \in \mathbb{Z}$}~\cite{toroidal}} de acuerdo
+a un vector $\vec{v_i}$. En cada momento sabemos la posici\'on de cada agente
+$p_i(t) = (x_i, y_i)$ donde $x_i$ y $y_i$ son coordenadas cartesianas en el
+espacio. Cuando $t = 0$, tenemos la posici\'on inicial de los agentes $p_i(0) = (x_{0i}, y_{0i})$.
+
+Suponemos que queremos colorear la gr\'afica con $K$ colores, denotando
+como $C = \{1, 2, ..., K\}$ al conjunto de colores, donde $K$ no debe ser menor
+que el n\'umero crom\'atico asociado a la gr\'afica para que el algoritmo
+converja. Asignamos a estos colores, $K$ puntos en el espacio, los colores
+objetivo $CG = \{g_1, ..., g_K\}$, dotados de una atracci\'on gravitacional
+resultando en un componente de velocidad $\vec{v_{gc}}$ afectando a los agentes.
+La fuerza de atracci\'on disminuir\'a con la distancia, pero afectar\'a a todos
+los agenetes en el espacio.
+
+~\cite{israel} define el sistema como una tupla:
+
+\[F = (B, CG, \{\vec{v_i}\}, K, \{\vec{a_{i, k}}\}, R)\]
+
+donde:
+
+\begin{itemize}
+\item $B$ es el conjunto de agentes
+\item $\{\vec{v_i}\}$ es el conjunto de vectores en el instante $t$
+\item $K$ es el n\'umero crom\'atico hipot\'etico \footnote{Este se definir\'a
+    como el n\'umero crom\'atico para gr\'aficas creadas artificialmente y
+    como un n\'umero aleatorio (lo suficientemente grande) para gr\'aficas, de la
+    misma manera, aleatorias.}
+\item $\{\vec{a_{i, k}}\}$ es el conjunto de fuerzas de atracci\'on de los colores
+  objetivo ejercidas en los agentes.
+\item $R$ denota las fuerzas de repulsi\'on en el vecindario de los colores objetivo.
+\end{itemize}
+
+\subsection{Velocidad de un agente}
+La velocidad de una agente est\'a definida de la siguiente manera:
+
+\begin{align*}
+  \vec{v_i}(y+1) =
+  \begin{cases}
+    0 & c_i \in C \ \& \ (\lambda_i = 1)\\
+    d \cdot \vec{a_{i, k^*}} & c_i \not \in C\\
+    v_r \cdot (p_r - p_i) & (c_i \in C) \ \& \ (\lambda_i = 0)
+  \end{cases}
+\end{align*}
+
+donde
+
+\begin{itemize}
+\item $d$ es la distancia de la posici\'on $p_i$ del agente a la posici\'on del color
+  objetivo m\'as cercano $g_{k^*}$
+\item $\vec{a_{i, k^*}}$ representa la fuerza de atracci\'on que el color objetivo
+  m\'as cercano ejerce sobre el agente
+\item $v_r$ es la magnitud de un vector aleatorio moviendo al agente hacia una
+  direcci\'on aleatoria $p_r$ cuando este es expulsado de un color objetivo.
+\item $\lambda_i$ es un par\'ametro que representa el efecto del grado de
+  confort del agente. Cuando un agente $b_i$ alcanza el radio de influencia de
+  un color objetivo en un instante $t$, su velocidad se torna 0.
+\end{itemize}
+
+\subsection{Din\'amica dentro de un color objetivo}
+
+La interacci\'on de los agentes y los colores objetivo se define a trav\'es de un
+radio de influencia generado por los colores. Y cuando el agente est\'e dentro
+de este, dejar\'a de moverse y el nodo correspondiente en la gr\'afica ser\'a
+asignado a este color. Se denota al conjunto de agentes cuya posici\'on en el
+espacio es la regi\'on que se encuentra los suficientemente cerca al vecindario
+de un color como
+
+\[N(g_k) = \{b_i \ \text{ t.q. } ||p_i - g_k|| < \textit{r}\}\]
+\begin{center}
+  \tiny{\textit{Donde $r$ representa el radio de influencia del color.}}
+\end{center}
+
+A pesar de que dentro del radio de influencia del color no hay m\'as atracci\'on
+gravitacional, puede estar presente cierto grado de repulsi\'on entre agentes
+que est\'an conectados a trav\'es de una arista en la gr\'afica $G$. Esta
+repulsi\'on solo es efectiva para los agentes dentro del vecindario del mismo
+color objetivo. Este efecto se modela definiendo una funci\'on que tiene
+un valor de $1$ si un par de agentes tienen una arista en com\'un, y 0, en
+otro caso. Las fuerzas de repulsi\'on que experimenta el agente $b_i$ de los
+agentes en el color objetivo $g_k$ se definen como sigue:
+
+\[R(b_i, g_k) = \sum_{N(g_k)} \textit{repulsi\'on} \ (b_i, b_j)\]
+
+\subsection{Confort}
+
+En cada paso del proceso iterativo en el que un agente permanece en un color
+objetivo sin ser perturbado, su confort aumenta (hasta llegar a un m\'aximo
+definido). Cuando otro agente $b_i$, fuera del color objetivo $g_{k^*}$ intenta
+entrar al vecindario de ese color objetivo, la fuerza de repulsi\'on $R(b_i, g_{k^*})$
+es evaluada. Si la repulsi\'on es mayor que cero entonces el agente entrante
+desafiar\'a la estabilidad del vecindario y al menos un agente tendr\'a que
+abandonarlo (el cual puede ser \'el mismo). Si los valores de confort
+de los agentes desafiados tienen valores mayores a cero, entonces su confort
+disminuir\'a en una unidad. Si su confort llega a cero, entonces el agente
+es expulsado del color objetivo a una posici\'on $p_r$ aleatoria en el espacio
+con velocidad $v_r$.
+
+\subsection{Funci\'on de Costo}
+La funci\'on de costo definida en la configuraci\'on espacial del sistema global es:
+\[f(B, CG) = |\{b_i  \ \textit{ t.q. } \ c_i \in C \ \& \ R(b_i, g_{ci}) = 0\}|.\]
+
+Esta funci\'on de costo es el n\'umero de nodos de la gr\'afica que tienen un color
+asignado y sin ning\'un conflicto dentro de un color objetivo. Los agentes fuera
+del vecindario de un color objetivo no pueden ser evaluados, para que estos sean
+parte de la soluci\'on al problema.
+
+Se destacan a la dimensi\'on del mundo y al radio de influencia de los colores
+objetivo como factores importantes para la determinaci\'on de la velocidad de
+convergencia del alforitmo. Si el mundo es grande y el radio peque\~no el
+algoritmo converger\'a lentamente, mon\'otonamente; si el mundo es reducido
+y el radio es grande el algoritmo ser\'a m\'as r\'apido pero la convergencia
+ser\'a inestable porque el algoritmo caer\'a en m\'inimos locales y necesitar\'a
+un aumento en la energ\'ia transitoria para salir de ellos. La explicaci\'on de
+este comportamiento es que el mundo no est\'a normalizado y la magnitud del vector
+velocidad puede ser m\'as grande que el radio de influencia del color objetivo
+y puede cruzar un color sin caer en \'el.
+
+Cuando todos los agentes se detienen, tenemos que $f(B, CG) = n$ y la asignaci\'on
+de $K$ colores a la gr\'afica $G$ ha sido concluida exitosamente.
 
   \chapter{Dise\~no}
 

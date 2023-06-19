@@ -36,8 +36,6 @@ struct _Input_parser {
   struct drand48_data *buffer;
   /* The adjacency matrix. */
   int** edges;
-  /* The dimensions of the toric world. */
-  double d;
 };
 
 /* Creates a new Input Parser. */
@@ -97,30 +95,10 @@ Graph* input_parser_parse(Input_parser* parser) {
   /* Number of edges. */
   parser->m = *(n + 1);
   free(n);
-
-  /* The file must contain a dimension line. */
-  /* d DIMENSION */
-  while (!feof(parser->fp))
-    if (strstr(fgets(s, 100, parser->fp) ? s : "", "d") != 0)
-      break;
-
-  if (strstr(s, "d") == 0) {
-    fprintf(stderr, "GCP_GSA: Wrong file format\n");
-    exit(1);
-  }
-
-  token = strtok(s, "  \f\n\r\t\v");
-  while(token != 0) {
-    if (isdigit(*token)) {
-      parser->d =  atoi(token);
-      break;
-    }
-    token = strtok(0, "  \f\n\r\t\v");
-  }
-
+  
   /* The adjacency matrix initialization. */
   parser->edges = calloc(1, sizeof(int*)*(parser->n + 1));
-  for(i = 0; i < parser->n; i++)
+  for(i = 0; i < parser->n + 1; i++)
     *(parser->edges + i) = calloc(1, (parser->n + 1) * sizeof(int));
 
   i = 0, j = 0;
@@ -143,5 +121,5 @@ Graph* input_parser_parse(Input_parser* parser) {
     }
   }
 
-  return graph_new(parser->buffer, parser->edges, parser->n, parser->d);
+  return graph_new(parser->buffer, parser->edges, parser->n);
 }

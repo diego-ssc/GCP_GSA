@@ -55,3 +55,46 @@ double vector_angle(Vector* vector);
  * @return the result vector.
  */
 Vector* s_mult(Vector* vector, double sc);
+
+/**
+ * Computes the sum between two vectors.
+ * @param v_1 the first vector.
+ * @param v_2 the second vector.
+ * @return the resulting vector.
+ */
+Vector* vector_sum(Vector* v_1, Vector* v_2);
+
+/**
+ * Returns the first component of the vector.
+ * @param vector the vector.
+ * @return the first component.
+ */
+double vector_x(Vector* vector);
+
+/**
+ * Returns the second component of the vector.
+ * @param vector the vector.
+ * @return the second component.
+ */
+double vector_y(Vector* vector);
+
+/**
+ * Sets the first component of the vector.
+ * @param vector the vector.
+ * @param v_1 the first component.
+ */
+void vector_set_x(Vector* vector, double v_1);
+
+/**
+ * Sets the second component of the vector.
+ * @param vector the vector.
+ * @param v_2 the second component.
+ */
+void vector_set_y(Vector* vector, double v_2);
+
+/**
+ * Normalizes the vector to fit the toric world.
+ * @param vector the vector.
+ * @param d the world dimension.
+ */
+void vector_normalize(Vector* vector, double d);

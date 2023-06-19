@@ -23,10 +23,15 @@
 
 /**
  * Creates a new GSA.
- * @param graph the graph.
  * @param seedval the seed.
+ * @param n_c the number of colors.
+ * @param file the file.
+ * @param d the graph dimension.
+ * @param i the number of iterations.
+ * @param c the comfort.
  */
-GSA* gsa_new(Graph* graph, long int seedval);
+GSA* gsa_new(char* file, long int seedval, int n_c, double d,
+             int i, int c);
 
 /**
  * Frees the memory used by the GSA.
@@ -42,6 +47,27 @@ void gsa_free(GSA* gsa);
 Agent** gsa_agents(GSA* gsa);
 
 /**
+ * Creates the colors of the problem.
+ * @param gsa the gravitational search algorithm.
+ * @return the colors.
+ */
+Color** gsa_colors(GSA* gsa);
+
+/**
+ * Sets the initial conditions of the colors for
+ * a new iteration.
+ * @param gsa the gravitational search algorithm.
+ */
+void gsa_set_initial_conditions_color(GSA* gsa);
+
+/**
+ * Updates the agent vectors during the algorithm
+ * iterations.
+ * @param gsa the gravitational search algorithm.
+ */
+void gsa_agent_vectors(GSA* gsa);
+
+/**
  * Frees the memory used by the GSA.
  * @param gsa the gravitational search algorithm.
  * @return the cost.
@@ -51,5 +77,6 @@ int gsa_cost_function(GSA* gsa);
 /**
  * Computes the heuristic.
  * @param gsa the gravitational search algorithm.
+ * @return the solution.
  */
-void gsa(GSA* gsa);
+int gsa_heuristic(GSA* gsa);

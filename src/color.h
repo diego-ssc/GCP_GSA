@@ -23,8 +23,9 @@
  * Creates a new color.
  * @param x the x coordinate.
  * @param y the y coordinate.
+ * @param id the identifier.
  */
-Color* color_new(int x, int y);
+Color* color_new(double x, double y, int id);
 
 /**
  * Frees the memory used by the color.
@@ -75,3 +76,19 @@ int color_visited(Color* color);
  * @param status the status.
  */
 void color_set_visited(Color* color, int status);
+
+/**
+ * Computes the distance between two colors.
+ * @param c_1 the first color.
+ * @param c_2 the second color.
+ * @return the distance.
+ */
+double color_distance(Color* c_1, Color* c_2);
+
+/**
+ * Tells if two colors are equal.
+ * @param c_1 the first color.
+ * @param c_2 the second color.
+ * @return 1, if the are equal; 0, otherwise.
+ */
+int color_equals(Color* c_1, Color* c_2);

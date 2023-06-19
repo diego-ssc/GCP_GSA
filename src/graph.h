@@ -24,15 +24,21 @@
  * @param buffer the RNG buffer.
  * @param elements the matrix of elements.
  * @param n the number of elements.
- * @param d the dimensions of the world.
  */
-Graph* graph_new(struct drand48_data *buffer, int** elements, int n, double d);
+Graph* graph_new(struct drand48_data *buffer, int** elements, int n);
 
 /**
  * Frees the memory used by the graph.
  * @param graph the graph.
  */
 void graph_free(Graph* graph);
+
+/**
+ * Sets the dimension of the graph.
+ * @param graph the graph.
+ * @param d the dimension.
+ */
+void graph_set_dimension(Graph* graph, double d);
 
 /**
  * Returns the x coordinate of the vertex.
@@ -75,6 +81,13 @@ Vertex** graph_vertices(Graph* graph);
  * @return the number of nodes.
  */
 int graph_n(Graph* graph);
+
+/**
+ * Returns the dimension of the graph
+ * @param graph the graph.
+ * @return the dimension.
+ */
+double graph_dimension(Graph* graph);
 
 /**
  * Returns 1 if the two nodes are connectes; 0, otherwise.

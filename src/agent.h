@@ -26,8 +26,9 @@
  * @param x the x coordinate.
  * @param y the y coordinate.
  * @param buffer the RNG buffer.
+ * @param n the node.
  */
-Agent* agent_new(double x, double y, struct drand48_data *buffer);
+Agent* agent_new(double x, double y, struct drand48_data *buffer, int n);
 
 /**
  * Frees the memory used by the agent.
@@ -57,6 +58,44 @@ Color* agent_color(Agent* agent);
 int agent_node(Agent* agent);
 
 /**
+ * Returns the vector of the agent.
+ * @param agent the agent.
+ * @return the vector.
+ */
+Vector* agent_v(Agent* agent);
+
+/**
+ * Returns the x coordinate.
+ * @param agent the agent.
+ * @return the x coordinate.
+ */
+double agent_x(Agent* agent);
+
+/**
+ * Returns the y coordinate.
+ * @param agent the agent.
+ * @return the y coordinate.
+ */
+double agent_y(Agent* agent);
+
+/**
+ * Computes the vector of the agent.
+ * @param agent the agent.
+ * @param colors the colors.
+ * @param color_n the number of colors.
+ * @return the vector.
+ */
+Vector* agent_vector(Agent* agent, Color** colors,
+                     int color_n);
+
+/**
+ * Sets the vector of the agent.
+ * @param agent the agent.
+ * @param vector the vector.
+ */
+void agent_set_vector(Agent* agent, Vector* vector);
+
+/**
  * Computes the agent distance from the determined color.
  * @param agent the agent.
  * @param color the color.
@@ -80,3 +119,9 @@ void agent_set_comfort(Agent* agent, int comfort);
  */
 Color* agent_nearest_color(Agent* agent, Color** colors,
                            int color_n);
+
+/**
+ * Computes the new position of the vector.
+ * @param agent the agent.
+ */
+void agent_new_pos(Agent* agent);

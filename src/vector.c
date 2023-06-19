@@ -59,8 +59,38 @@ double vector_angle(Vector* vector) {
 
 /* Computes the scalar multiplication. */
 Vector* s_mult(Vector* vector, double sc) {
-  vector->v_1 *= sc;
-  vector->v_2 *= sc;
+  return vector_new(vector->v_1 * sc,
+                    vector->v_2 * sc);
+}
 
-  return vector;
+/* Computes the sum between two vectors. */
+Vector* vector_sum(Vector* vector_1, Vector* vector_2) {
+  return vector_new(vector_1->v_1 + vector_2->v_1,
+                    vector_1->v_2 + vector_2->v_2);
+}
+
+/* Returns the first component of the vector. */
+double vector_x(Vector* vector) {
+  return vector->v_1;
+}
+
+/* Returns the second component of the vector. */
+double vector_y(Vector* vector) {
+  return vector->v_2;
+}
+
+/* Sets the first component of the vector. */
+void vector_set_x(Vector* vector, double v_1) {
+  vector->v_1 = v_1;
+}
+
+/* Sets the second component of the vector. */
+void vector_set_y(Vector* vector, double v_2) {
+  vector->v_2 = v_2;
+}
+
+/* Normalizes the vector to fit the toric world. */
+void vector_normalize(Vector* vector, double d) {
+  vector->v_1 = (int)vector->v_1 % (int)d;
+  vector->v_2 = (int)vector->v_2 % (int)d;
 }

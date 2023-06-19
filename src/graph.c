@@ -58,7 +58,7 @@ static void free_v(Graph*);
 static void graph_n_vertices(Graph*);
 
 /* Returns a new Graph. */
-Graph* graph_new(struct drand48_data *buffer, int** edges, int n, double d) {
+Graph* graph_new(struct drand48_data *buffer, int** edges, int n) {
   /* Heap allocation. */
   Graph* graph    = malloc(sizeof(struct _Graph));
   graph->vertices = malloc(sizeof(Vertex*) * n);
@@ -67,7 +67,6 @@ Graph* graph_new(struct drand48_data *buffer, int** edges, int n, double d) {
   graph->n      = n;
   graph->buffer = buffer;
   graph->edges  = edges;
-  graph->d      = d;
 
   graph_n_vertices(graph);
 
@@ -81,6 +80,11 @@ void graph_free(Graph* graph) {
   if (graph->vertices)
     free_v(graph);
   free(graph);
+}
+
+/* Sets the dimension of the graph. */
+void graph_set_dimension(Graph* graph, double d) {
+  graph->d = d;
 }
 
 /* Returns a new Vertex. */
@@ -129,7 +133,7 @@ char* vertex_to_string(Vertex* vertex) {
 /* Frees the memory used by the adjacency matrix. */
 static void free_adj_matrix(Graph* graph) {
   int i;
-  for (i = 0; i < graph->n; ++i)
+  for (i = 0; i < graph->n + 1; ++i)
     free(*(graph->edges + i));
   free(graph->edges);
 }
@@ -162,6 +166,11 @@ Vertex** graph_vertices(Graph* graph) {
 /* Returns the number of nodes. */
 int graph_n(Graph* graph) {
   return graph->n;
+}
+
+/* Returns the dimension of the graph */
+double graph_dimension(Graph* graph) {
+  return graph->d;
 }
 
 /* Returns 1 if the two nodes are connectes; 0, otherwise. */

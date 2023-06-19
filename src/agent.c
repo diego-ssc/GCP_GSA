@@ -45,7 +45,7 @@ struct _Agent {
 };
 
 /* Creates a new Agent. */
-Agent* agent_new(double x, double y, struct drand48_data *buffer) {
+Agent* agent_new(double x, double y, struct drand48_data *buffer, int n) {
   /* Heap allocation. */
   Agent* agent = malloc(sizeof(struct _Agent));
 
@@ -56,6 +56,7 @@ Agent* agent_new(double x, double y, struct drand48_data *buffer) {
   agent->comfort = 0;
   agent->buffer  = buffer;
   agent->vector  = 0;
+  agent->n       = n;
 
   return agent;
 }
@@ -81,33 +82,60 @@ int agent_node(Agent* agent) {
   return agent->n;
 }
 
+/* Returns the vector of the agent. */
+Vector* agent_v(Agent* agent) {
+  return agent->vector;
+}
+
+/* Returns the x coordinate. */
+double agent_x(Agent* agent) {
+  return agent->x;
+}
+
+/* Returns the y coordinate. */
+double agent_y(Agent* agent) {
+  return agent->y;
+}
+
 /* Computes the vector of the agent. */
 Vector* agent_vector(Agent* agent, Color** colors,
                      int color_n) {
   Color *c;
-  double a, b;
+  double a, b, x, y;
 
   drand48_r(agent->buffer, &a);
 
   /* Random magnitude. */
-  double r_m = a;
+  double r_m = MAX_DISTANCE*a;
 
   drand48_r(agent->buffer, &a);
   drand48_r(agent->buffer, &b);
+  drand48_r(agent->buffer, &x);
+  drand48_r(agent->buffer, &y);
 
   /* Random position. */
-  Vector* r_pos = vector_new(MAX_DISTANCE*a, MAX_DISTANCE*b);
+  Vector* r_pos = vector_new(x > 0.5 ? MAX_DISTANCE*a : MAX_DISTANCE*(-a),
+                             y > 0.5 ? MAX_DISTANCE*b : MAX_DISTANCE*(-b));
 
   if (!agent->color) {
     c = agent_nearest_color(agent, colors, color_n);
-    return s_mult(color_attraction(agent->color, agent), agent_distance(agent, c));
+    vector_free(r_pos);
+    return s_mult(color_attraction(c, agent), agent_distance(agent, c));
   }
 
   if (0 == agent->comfort) {
+    vector_free(r_pos);
     return s_mult(r_pos, MAX_DISTANCE*r_m);
     }
 
-  return 0;
+  vector_set_x(r_pos, 0);
+  vector_set_y(r_pos, 0);
+  return r_pos;
+}
+
+/* Sets the vector of the agent. */
+void agent_set_vector(Agent* agent, Vector* vector) {
+  agent->vector = vector;
 }
 
 double agent_distance(Agent* agent, Color* color) {
@@ -120,6 +148,7 @@ void agent_set_comfort(Agent* agent, int comfort) {
   agent->comfort = comfort;
 }
 
+/* Computes the nearest color to the agent. */
 Color* agent_nearest_color(Agent* agent, Color** colors,
                            int color_n) {
   int i;
@@ -134,4 +163,10 @@ Color* agent_nearest_color(Agent* agent, Color** colors,
   }
 
   return c;
+}
+
+/* Computes the new position of the vector. */
+void agent_new_pos(Agent* agent) {
+  agent->x += vector_x(agent->vector);
+  agent->y += vector_y(agent->vector);
 }

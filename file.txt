@@ -11,7 +11,6 @@ c              Lyle A. McGeoch and Catherine Schevon
 c              Operations Research, 39, 378-406 (1991)
 c
 p edge 6 3
-d 100
 e 1 2
 e 3 4
 e 5 6

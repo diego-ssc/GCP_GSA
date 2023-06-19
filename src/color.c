@@ -18,35 +18,45 @@
  */
 
 #include <stdlib.h>
+#include <math.h>
 
 #include "color.h"
 
 #define NEAR_ENOUGH 4
 
-/* The color structure */
+/* The color structure. */
 struct _Color {
   /* The x coordinate. */
-  int x;
+  double x;
   /* The y coordinate. */
-  int y;
+  double y;
+  /* The identifier. */
+  int id;
   /* Tells if the color was visited. */
   int c_v;
+  /* The color attraction. */
+  Vector* vector;
 };
 
 /* Creates a new color. */
-Color* color_new(int x, int y) {
+Color* color_new(double x, double y, int id) {
   /* Heap allocation. */
   Color* color = malloc(sizeof(struct _Color));
 
   /* Heap initialization. */
-  color->x = x;
-  color->y = x;
+  color->x      = x;
+  color->y      = x;
+  color->id     = id;
+  color->c_v    = 0;
+  color->vector = vector_new(0, 0);
 
   return color;
 }
 
 /* Frees the memory used by the color. */
 void color_free(Color* color) {
+  if (color->vector)
+    vector_free(color->vector);
   free(color);
 }
 
@@ -62,8 +72,10 @@ int color_y(Color* color) {
 
 /* Returns the attraction force related to the agent. */
 Vector* color_attraction(Color* color, Agent* agent) {
-  Vector* vector = vector_new(0, 0);
-  return vector;
+  vector_set_x(color->vector, color->x - agent_x(agent));
+  vector_set_y(color->vector, color->y - agent_y(agent));
+
+  return color->vector;
 }
 
 /* Returns 1 if the agent is under the influence of the color;
@@ -73,7 +85,7 @@ int color_in(Color* color, Agent* agent) {
 }
 
 /* Returns 1 if the color was visitied in the most recent
- operation; or 0, otherwise. */
+   operation; or 0, otherwise. */
 int color_visited(Color* color) {
   return color->c_v;
 }
@@ -81,4 +93,15 @@ int color_visited(Color* color) {
 /* Sets the status that tells if a color was visited. */
 void color_set_visited(Color* color, int status) {
   color->c_v = status;
+}
+
+/* Computes the distance between two colors. */
+double color_distance(Color* c_1, Color* c_2) {
+  return sqrt(pow(fabs(c_1->x - c_2->x), 2) +
+              pow(fabs(c_1->y - c_2->y), 2));
+}
+
+/* Tells if two colors are equal. */
+int color_equals(Color* c_1, Color* c_2) {
+  return c_1->id == c_2->id;
 }
