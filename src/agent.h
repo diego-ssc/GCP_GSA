@@ -111,6 +111,13 @@ double agent_distance(Agent* agent, Color* color);
 void agent_set_comfort(Agent* agent, int comfort);
 
 /**
+ * Sets the color of the agent.
+ * @param agent the agent.
+ * @param color the color.
+ */
+void agent_set_color(Agent* agent, Color* color);
+
+/**
  * Computes the nearest color to the agent.
  * @param agent the agent.
  * @param colors the colors.
@@ -123,5 +130,6 @@ Color* agent_nearest_color(Agent* agent, Color** colors,
 /**
  * Computes the new position of the vector.
  * @param agent the agent.
+ * @param d the graph dimension.
  */
-void agent_new_pos(Agent* agent);
+void agent_new_pos(Agent* agent, double d);

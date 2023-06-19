@@ -31,7 +31,8 @@ static void usage() {
           "\t-n\n\t\tthe expected chromatic number\n"
           "\t-d\n\t\tthe graph dimension\n"
           "\t-i\n\t\tthe number of iterations\n"
-          "\t-c\n\t\tthe comfort\n");
+          "\t-c\n\t\tthe comfort\n"
+          "\t-v\n\t\tverbose\n");
   exit(1);
 }
 
@@ -40,7 +41,7 @@ void parse_arguments(int argc, char** argv) {
   if (argc < 3)
     usage();
 
-  int n = 0, i = 0, c = 0, f = 0;
+  int n = 0, i = 0, c = 0, f = 0, v = 0;
   double d = 0;
   long int s = 0;
   char f_n[100];
@@ -66,6 +67,9 @@ void parse_arguments(int argc, char** argv) {
         case 'c':
           c = argc - 1 ? atoi(*(argv + 1)) : c;
           break;
+        case 'v':
+          v = 1;
+          break;
         case 'd':
           d = argc - 1 ? atof(*(argv + 1)) : d;
           break;
@@ -78,7 +82,7 @@ void parse_arguments(int argc, char** argv) {
   if (!f)
     usage();
 
-  GSA* gsa = gsa_new(f_n, s, n, d, i, c);
+  GSA* gsa = gsa_new(f_n, s, n, d, i, c, v);
   printf("Solution found: %d\n", gsa_heuristic(gsa));
   gsa_free(gsa);
 }

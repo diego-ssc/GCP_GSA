@@ -24,8 +24,10 @@
  * @param buffer the RNG buffer.
  * @param elements the matrix of elements.
  * @param n the number of elements.
+ * @param d the dimension.
  */
-Graph* graph_new(struct drand48_data *buffer, int** elements, int n);
+Graph* graph_new(struct drand48_data *buffer, int** elements,
+                 int n, double d);
 
 /**
  * Frees the memory used by the graph.

@@ -38,14 +38,14 @@ void color_free(Color* color);
  * @param color the color.
  * @return the x coordinate.
  */
-int color_x(Color* color);
+double color_x(Color* color);
 
 /**
  * Returns the y coordinate of the color.
  * @param color the color.
  * @return the y coordinate.
  */
-int color_y(Color* color);
+double color_y(Color* color);
 
 /**
  * Returns the attraction force related to the agent.

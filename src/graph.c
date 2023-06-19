@@ -58,7 +58,7 @@ static void free_v(Graph*);
 static void graph_n_vertices(Graph*);
 
 /* Returns a new Graph. */
-Graph* graph_new(struct drand48_data *buffer, int** edges, int n) {
+Graph* graph_new(struct drand48_data *buffer, int** edges, int n, double d) {
   /* Heap allocation. */
   Graph* graph    = malloc(sizeof(struct _Graph));
   graph->vertices = malloc(sizeof(Vertex*) * n);
@@ -67,6 +67,7 @@ Graph* graph_new(struct drand48_data *buffer, int** edges, int n) {
   graph->n      = n;
   graph->buffer = buffer;
   graph->edges  = edges;
+  graph->d     = d;
 
   graph_n_vertices(graph);
 

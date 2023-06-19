@@ -91,6 +91,6 @@ void vector_set_y(Vector* vector, double v_2) {
 
 /* Normalizes the vector to fit the toric world. */
 void vector_normalize(Vector* vector, double d) {
-  vector->v_1 = (int)vector->v_1 % (int)d;
-  vector->v_2 = (int)vector->v_2 % (int)d;
+  vector->v_1 = fmod(vector->v_1, d);
+  vector->v_2 = fmod(vector->v_2, d);
 }

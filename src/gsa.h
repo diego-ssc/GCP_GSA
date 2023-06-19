@@ -29,9 +29,10 @@
  * @param d the graph dimension.
  * @param i the number of iterations.
  * @param c the comfort.
+ * @param v verbose option.
  */
 GSA* gsa_new(char* file, long int seedval, int n_c, double d,
-             int i, int c);
+             int i, int c, int v);
 
 /**
  * Frees the memory used by the GSA.

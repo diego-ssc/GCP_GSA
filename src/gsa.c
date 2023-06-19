@@ -47,6 +47,8 @@ struct _GSA {
   int i;
   /* The maximum comfort. */
   int c;
+  /* Verbose option. */
+  int v;
 };
 
 /* Frees the agents. */
@@ -63,7 +65,7 @@ static void comfort(GSA*);
 
 /* Creates a new GSA. */
 GSA* gsa_new(char* file, long int seedval, int n_c, double d,
-             int i, int c) {
+             int i, int c, int v) {
   /* Heap allocation. */
   GSA* gsa    = malloc(sizeof(struct _GSA));
 
@@ -73,15 +75,15 @@ GSA* gsa_new(char* file, long int seedval, int n_c, double d,
   gsa->parser = input_parser_new(file, gsa->buffer);
 
   /* Heap initialization. */
-  gsa->graph  = input_parser_parse(gsa->parser);
-  graph_set_dimension(gsa->graph, d ? d : 100);
+  gsa->graph  = input_parser_parse(gsa->parser, d ? d : 100);
   gsa->agents = gsa_agents(gsa);
   gsa->n      = graph_n(gsa->graph);
   gsa->n_c    = n_c ? n_c : gsa->n;
   gsa->colors = gsa_colors(gsa);
-  gsa->c_d    = 0.05 * graph_dimension(gsa->graph);
+  gsa->c_d    = 0.1 * graph_dimension(gsa->graph);
   gsa->i      = i ? i : MAX_ITERATIONS;
   gsa->c      = c ? c : MAX_COMFORT;
+  gsa->v      = v;
 
   return gsa;
 }
@@ -123,10 +125,11 @@ Agent** gsa_agents(GSA* gsa) {
   Agent** agents = malloc(sizeof(Agent*)* graph_n(gsa->graph));
   int i;
 
-  for (i = 0; i < graph_n(gsa->graph); ++i)
+  for (i = 0; i < graph_n(gsa->graph); ++i) {
     *(agents + i) = agent_new(vertex_x(*(vertices + i)),
                               vertex_y(*(vertices + i)),
                               gsa->buffer, vertex_i(*(vertices + i)));
+  }
 
   return agents;
 }
@@ -185,7 +188,8 @@ void gsa_agent_vectors(GSA* gsa) {
       vector_normalize(v, graph_dimension(gsa->graph));
       agent_set_vector(*(gsa->agents + i), v);
     }
-    agent_new_pos(*(gsa->agents + i));
+
+    agent_new_pos(*(gsa->agents + i), graph_dimension(gsa->graph));
   }
 }
 
@@ -213,19 +217,45 @@ int gsa_sol(GSA* gsa) {
   return s;
 }
 
+/* Sets the related color of the agents. */
+void gsa_color(GSA* gsa) {
+  int i, j;
+  for (i = 0; i < gsa->n; ++i)
+    for (j = 0; j < gsa->n_c; ++j)
+      if (color_in(*(gsa->colors + j), *(gsa->agents + i)))
+        agent_set_color(*(gsa->agents + i), *(gsa->colors + j));
+}
+
 /* Computes the heuristic. */
 int gsa_heuristic(GSA* gsa) {
   int a = gsa->i;
+
   while ((gsa_cost_function(gsa) != gsa->n) && --a) {
     gsa_agent_vectors(gsa);
+    gsa_color(gsa);
     comfort(gsa);
     gsa_set_initial_conditions_color(gsa);
   }
+
+  if (gsa->v) {
+    for (int i = 0; i < gsa->n; ++i) {
+      printf("Agent:\nx: %f\ny: %f\n",
+             agent_x(*(gsa->agents + i)),
+             agent_y(*(gsa->agents + i)));
+    }
+
+    for (int i = 0; i < gsa->n_c; ++i) {
+      printf("Color:\nx: %f\ny: %f\n",
+             color_x(*(gsa->colors + i)),
+             color_y(*(gsa->colors + i)));
+    }
+    printf("Cost function: %d\n", gsa_cost_function(gsa));
+  }
+
   if (!a) {
     printf("GCP_GSA: A solution could not be found\n");
     exit(1);
   }
-  /* printf("Cost function: %d\ngsa n: %d\na = %d\n", gsa_cost_function(gsa), gsa->n, a); */
   return gsa_sol(gsa);
 }
 

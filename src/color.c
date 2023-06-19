@@ -61,12 +61,12 @@ void color_free(Color* color) {
 }
 
 /* Returns the x coordinate of the color. */
-int color_x(Color* color) {
+double color_x(Color* color) {
   return color->x;
 }
 
 /* Returns the y coordinate of the color. */
-int color_y(Color* color) {
+double color_y(Color* color) {
   return color->y;
 }
 

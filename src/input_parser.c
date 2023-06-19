@@ -64,7 +64,7 @@ void input_parser_free(Input_parser* parser) {
 }
 
 /* Parses the input. */
-Graph* input_parser_parse(Input_parser* parser) {
+Graph* input_parser_parse(Input_parser* parser, double d) {
   char s[100];
   char* token;
   int* n = malloc(sizeof(int) * 2);
@@ -121,5 +121,5 @@ Graph* input_parser_parse(Input_parser* parser) {
     }
   }
 
-  return graph_new(parser->buffer, parser->edges, parser->n);
+  return graph_new(parser->buffer, parser->edges, parser->n, d);
 }

@@ -64,6 +64,8 @@ Agent* agent_new(double x, double y, struct drand48_data *buffer, int n) {
 
 /* Frees the memory used by the agent. */
 void agent_free(Agent* agent) {
+  if (agent->vector)
+    vector_free(agent->vector);
   free(agent);
 }
 
@@ -123,8 +125,7 @@ Vector* agent_vector(Agent* agent, Color** colors,
     return s_mult(color_attraction(c, agent), agent_distance(agent, c));
   }
 
-  if (0 == agent->comfort) {
-    vector_free(r_pos);
+  if (0 == agent->comfort) {/* Leak. */
     return s_mult(r_pos, MAX_DISTANCE*r_m);
     }
 
@@ -148,6 +149,11 @@ void agent_set_comfort(Agent* agent, int comfort) {
   agent->comfort = comfort;
 }
 
+/* Sets the color of the agent. */
+void agent_set_color(Agent* agent, Color* color) {
+  agent->color = color;
+}
+
 /* Computes the nearest color to the agent. */
 Color* agent_nearest_color(Agent* agent, Color** colors,
                            int color_n) {
@@ -166,7 +172,9 @@ Color* agent_nearest_color(Agent* agent, Color** colors,
 }
 
 /* Computes the new position of the vector. */
-void agent_new_pos(Agent* agent) {
+void agent_new_pos(Agent* agent, double d) {
   agent->x += vector_x(agent->vector);
   agent->y += vector_y(agent->vector);
+  agent->x = fmod(agent->x, d);
+  agent->y = fmod(agent->y, d);
 }

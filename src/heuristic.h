@@ -20,6 +20,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * The Agent opaque structure.

@@ -37,6 +37,7 @@ void input_parser_free(Input_parser* parser);
 /**
  * Parses the input.
  * @param parser the parser.
+ * @param the graph dimension.
  * @return the graph.
  */
-Graph* input_parser_parse(Input_parser* parser);
+Graph* input_parser_parse(Input_parser* parser, double d);
