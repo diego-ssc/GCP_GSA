@@ -50,7 +50,7 @@ Color* color_new(double x, double y, int id, int r) {
   color->c_v    = 0;
   color->vector = vector_new(0, 0);
   color->r      = r;
-  
+
   return color;
 }
 

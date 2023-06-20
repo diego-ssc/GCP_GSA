@@ -214,9 +214,9 @@ int gsa_sol(GSA* gsa) {
     for (j = 0; j < gsa->n; ++j)
       if (color_equals(*(gsa->colors + i),
                        agent_color(*(gsa->agents + j)))) {
-            s++;
-            break;
-          }
+        s++;
+        break;
+      }
 
   return s;
 }

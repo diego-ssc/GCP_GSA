@@ -129,7 +129,7 @@ Vector* agent_vector(Agent* agent, Color** colors,
     Vector* v = s_mult(r_pos, MAX_DISTANCE*r_m);
     vector_free(r_pos);
     return v;
-    }
+  }
 
   vector_set_x(r_pos, 0);
   vector_set_y(r_pos, 0);

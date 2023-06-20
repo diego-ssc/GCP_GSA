@@ -355,14 +355,47 @@ hubo una invocaci\'on de la funci\'on $drand48\_r$\footnote{Se trata de una func
   a pesar de que esta no se haya implementado.} para cada una de ellas.
 Se revisar\'a con m\'as detalle y se espera corregir en un futuro pr\'oximo.
 
+\section{Par\'ametros}
+El programa se ejecuta en la l\'inea de comandos, recibiendo los par\'ametros de la misma
+a trav\'es como par\'ametros del programa y a la gr\'afica en un archivo con formato
+DIMACS en un archivo de texto.
+
+\begin{center}
+  \texttt{./GCP\_GSA -f [archivo de entrada] [opciones]}\\
+  \tiny{Comando de ejecuci\'on del algoritmo}
+\end{center}
+
+Donde las opciones incluyen:
+\begin{itemize}
+\item \texttt{-s} \ \ la semilla
+\item \texttt{-n} \ \ el n\'umero crom\'atico hipot\'etico
+\item \texttt{-d} \ \ la dimensi\'on de la gr\'afica\footnote{Con esto me refiero al
+    tama\~no de una lado de la gr\'afica, es decir, del mundo t\'orico sobre el que
+    se ejecutar\'a la heur\'istica, dado que se ha decidido que esta sea cuadrada.}
+\item \texttt{-i} \ \ el n\'umero de iteraciones m\'aximo (en caso de no satisfacer
+  la funci\'on de costo)
+\item \texttt{-c} \ \ el valor de confort m\'aximo
+\item \texttt{-v} \ \ la ejecuci\'on verbosa del algoritmo\footnote{Mostrar\'a las coordenadas
+    finales de los agentes y colores.}
+  \item \texttt{-r} \ \ el radio de los colores objetivo
+\end{itemize}
+
 \chapter{Experimentaci\'on}
 
 La experimentaci\'on se bas\'o en el uso de gr\'aficas predefinidas para el problema
 de coloraci\'on de gr\'aficas. Espec\'ificamente, se us\'o una gr\'afica de 300 nodos
-y 21695 aristas para la cual se tiene un n\'umero crom\'atico de 28. El algoritmo
-no fue capaz de
+y 21695 aristas para la cual se tiene un n\'umero crom\'atico de 28. El algoritmo fue
+capaz de obtener resultados decentes en cuesti\'on de unos segundos. Para este caso,
+se corri\'o con una hip\'otesis de 80, 100,000 iteraciones y un mundo t\'orico de
+dimensi\'on 100, con un radio de 50 para los colores objetivo. El mejor resultado
+obtenido fue de 36 (todos rondaron las cuatro decenas).
 
 \chapter{Conclusiones}
+
+A pesar de que la experimentaci\'on no fue exhaustiva, los resultados obtenidos parecen
+establecer una base s\'olida para futuros experimentos con una gama m\'as amplia de
+gr\'aficas no generadas artificialmente y con una implementaci\'on de concurrencia que
+permita una generaci\'on m\'as r\'apida y eficiente de resultados.
 
 \bibliography{ref}{}
 \bibliographystyle{plain}

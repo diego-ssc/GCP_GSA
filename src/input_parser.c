@@ -80,7 +80,7 @@ Graph* input_parser_parse(Input_parser* parser, double d) {
     fprintf(stderr, "GCP_GSA: Wrong file format\n");
     exit(1);
   }
-  
+
   token = strtok(s, "  \f\n\r\t\v");
   while(token != 0) {
     if (isdigit(*token)) {
@@ -95,7 +95,7 @@ Graph* input_parser_parse(Input_parser* parser, double d) {
   /* Number of edges. */
   parser->m = *(n + 1);
   free(n);
-  
+
   /* The adjacency matrix initialization. */
   parser->edges = calloc(1, sizeof(int*)*(parser->n + 1));
   for(i = 0; i < parser->n + 1; i++)
