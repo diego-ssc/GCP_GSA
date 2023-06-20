@@ -22,8 +22,6 @@
 
 #include "color.h"
 
-#define NEAR_ENOUGH 4
-
 /* The color structure. */
 struct _Color {
   /* The x coordinate. */
@@ -36,10 +34,12 @@ struct _Color {
   int c_v;
   /* The color attraction. */
   Vector* vector;
+  /* The color radius. */
+  int r;
 };
 
 /* Creates a new color. */
-Color* color_new(double x, double y, int id) {
+Color* color_new(double x, double y, int id, int r) {
   /* Heap allocation. */
   Color* color = malloc(sizeof(struct _Color));
 
@@ -49,7 +49,8 @@ Color* color_new(double x, double y, int id) {
   color->id     = id;
   color->c_v    = 0;
   color->vector = vector_new(0, 0);
-
+  color->r      = r;
+  
   return color;
 }
 
@@ -81,7 +82,7 @@ Vector* color_attraction(Color* color, Agent* agent) {
 /* Returns 1 if the agent is under the influence of the color;
    0, otherwise. */
 int color_in(Color* color, Agent* agent) {
-  return agent_distance(agent, color) <= NEAR_ENOUGH;
+  return agent_distance(agent, color) <= color->r;
 }
 
 /* Returns 1 if the color was visitied in the most recent

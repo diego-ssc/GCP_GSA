@@ -24,6 +24,7 @@
 
 #define MAX_COMFORT 5
 #define MAX_ITERATIONS 1000
+#define NEAR_ENOUGH 10
 
 /* The GSA structure. */
 struct _GSA {
@@ -49,6 +50,8 @@ struct _GSA {
   int c;
   /* Verbose option. */
   int v;
+  /* The color radius. */
+  int r;
 };
 
 /* Frees the agents. */
@@ -65,7 +68,7 @@ static void comfort(GSA*);
 
 /* Creates a new GSA. */
 GSA* gsa_new(char* file, long int seedval, int n_c, double d,
-             int i, int c, int v) {
+             int i, int c, int v, int r) {
   /* Heap allocation. */
   GSA* gsa    = malloc(sizeof(struct _GSA));
 
@@ -79,6 +82,7 @@ GSA* gsa_new(char* file, long int seedval, int n_c, double d,
   gsa->agents = gsa_agents(gsa);
   gsa->n      = graph_n(gsa->graph);
   gsa->n_c    = n_c ? n_c : gsa->n;
+  gsa->r      = r ? r : NEAR_ENOUGH;
   gsa->colors = gsa_colors(gsa);
   gsa->c_d    = 0.1 * graph_dimension(gsa->graph);
   gsa->i      = i ? i : MAX_ITERATIONS;
@@ -144,14 +148,14 @@ Color** gsa_colors(GSA* gsa) {
     drand48_r(gsa->buffer, &a);
     drand48_r(gsa->buffer, &b);
     *(colors + i) = color_new(a * graph_dimension(gsa->graph),
-                              b * graph_dimension(gsa->graph), i);
+                              b * graph_dimension(gsa->graph), i, gsa->r);
     for (j = 0; j < i; ++j) {
       while (color_distance(*(colors + i), *(colors + j)) < gsa->c_d) {
         color_free(*(colors + i));
         drand48_r(gsa->buffer, &a);
         drand48_r(gsa->buffer, &b);
         *(colors + i) = color_new(a * graph_dimension(gsa->graph),
-                                  b * graph_dimension(gsa->graph), i);
+                                  b * graph_dimension(gsa->graph), i, gsa->r);
 
         /* Check again the condition with all the colors. */
         j = 0;
@@ -203,16 +207,25 @@ int gsa_cost_function(GSA* gsa) {
   return j;
 }
 
+/* Computes the chromatic number. */
 int gsa_sol(GSA* gsa) {
+  /* int i, j, s = 0; */
+  /* for (i = 0; i < gsa->n; ++i) */
+  /*   for (j = 0; j < i; ++j) { */
+  /*     if (color_equals(agent_color(*(gsa->agents + j)), */
+  /*                      agent_color(*(gsa->agents + i)))) */
+  /*       continue; */
+  /*     if (j == i - 1) */
+  /*       s++; */
+  /*   } */
   int i, j, s = 0;
-  for (i = 0; i < gsa->n; ++i)
-    for (j = 0; j < i; ++j) {
-      if (color_equals(agent_color(*(gsa->agents + j)),
-                       agent_color(*(gsa->agents + i))))
-        continue;
-      if (j == i - 1)
-        s++;
-    }
+  for (i = 0; i < gsa->n_c; ++i)
+    for (j = 0; j < gsa->n; ++j)
+      if (color_equals(*(gsa->colors + i),
+                       agent_color(*(gsa->agents + j)))) {
+            s++;
+            break;
+          }
 
   return s;
 }

@@ -33,10 +33,10 @@
 
 \makeatletter
 \renewcommand{\@makechapterhead}[1]{%
-\vspace*{50 pt}%
-{\setlength{\parindent}{0pt} \raggedright \normalfont
-\bfseries\Huge\thechapter.\ #1
-\par\nobreak\vspace{40 pt}}}
+  \vspace*{50 pt}%
+  {\setlength{\parindent}{0pt} \raggedright \normalfont
+    \bfseries\Huge\thechapter.\ #1
+    \par\nobreak\vspace{40 pt}}}
 \makeatother
 
 \begin{document}
@@ -241,26 +241,129 @@ y puede cruzar un color sin caer en \'el.
 Cuando todos los agentes se detienen, tenemos que $f(B, CG) = n$ y la asignaci\'on
 de $K$ colores a la gr\'afica $G$ ha sido concluida exitosamente.
 
-  \chapter{Dise\~no}
+\chapter{Dise\~no}
+A pesar de que inicialmente se sigui\'o como gu\'ia el algoritmo descrito en
+~\cite{gsa} (y la versi\'on discreta del mismo, en ~\cite{bgsa}), opt\'e por
+implementar la versi\'on dada en ~\cite{israel}; esto porque a pesar de
+no basarse en la descripci\'on original, donde el autor conceb\'ia a las soluciones
+como agentes que eran modificados y atra\'idos a otras soluciones a trav\'es
+de un modelo donde aquellas evaluadas positivamente por la funci\'on de costo
+eran capaces de atraer a una gran cantidad de las restantes; mientras que
+las soluciones que pod\'ian mejorar, no ten\'ian tal capacidad. Esto permit\'ia
+una gran exploraci\'on (derivado por su naturaleza de enjambre) que, a su vez,
+conlu\'ia con buenos resultados, dada su buena concepci\'on de la explotaci\'on;
+planteaba una algoritmo similar (siguiendo la misma \textit{meta idea}) pero
+ya estaba completamente adaptado a los t\'erminos que el problema de coloraci\'on
+de gr\'aficas requer\'ia.
 
-  \section{Analizador Sint\'actico}
+\section{La Gr\'afica}
 
-  \section{El problema}
+En este nuevo algoritmo se conceb\'ia a la gr\'afica como un mundo t\'orico donde
+cada uno de los agentes ya no correspond\'ian a una soluci\'on del problema, sino
+a los nodos de la gr\'afica.
 
-  \section{Algoritmo de B\'usqueda Gravitacional}
+\section{Analizador Sint\'actico}
+Siguiendo las gu\'ias de dise\~no de programas similares que buscan encontrar el
+n\'umero crom\'atico de gr\'aficas aleatorias, encontr\'e que existe un est\'andar
+de representaci\'on de gr\'aficas.
 
-  \subsection{Adaptaci\'on}
+\textit{DIMACS} consiste en un formato para gr\'aficas no dirigidas e involucra
+las siguientes reglas de sintaxis.
 
-  \chapter{Implementaci\'on}
+\begin{itemize}
+\item Un archivo de entrada contiene toda la informaci\'on de una gr\'afica no
+  dirigida.
+\item Los nodes est\'an numeradas de $1$ a $n$ (siendo este el n\'umero total
+  de nodos).
+\item Se asume que los archivos de entrada se encuentran en un estado l\'ogicamente
+  correcto i consistentes: los identificadores de los nodos son v\'alidos, los nodos
+  son \'unicos y exactamente $m$ aristas son definidas.
+\item Los comentarios pueden aparecer en cualquier parte del archivo. Cada comentario
+  comienza con el car\'acter \textit{c}.
+\item Debe haber una \textit{l\'inea del problema} por archivo. Esta debe aparecer
+  antes de cualquier nodo o cualquier l\'inea descriptiva. Sigue el siguiente formato:
 
-  \section{Problemas}
+  \begin{center}
+    \texttt{p FORMAT NODES EDGES}
+  \end{center}
 
-  \subsection{Encapsulamiento}
+  Donde \texttt{p} denota que se trata de la l\'inea del problema. El campo \texttt{FORMAT}
+  deber\'ia contener la palabra \textit{edge}\footnote{Solo se trata de una convenci\'on
+    que mantiene consistencia con desaf\'ios previos relacionados al formato.}. El campo
+  \texttt{NODES} contiene un entero que define \textit{n} (el n\'umero de nodos). Mientras
+  que el campo \texttt{EDGES} contiene un entero que define \textit{m} (el n\'umero de aristas).
 
-  \chapter{Experimentaci\'on}
+\item Habr\'a un descriptor de arista por cada arista de la gr\'afica, cada uno con el siguiente
+  formato:
 
-  \chapter{Conclusiones}
+  \begin{center}
+    \texttt{e u v}
+  \end{center}
+  Representa la arista (u, v), esta aperecer\'a solo una vez y no deber\'a ser repetida como
+  (v, u).
+\end{itemize}
 
-  \bibliography{ref}{}
-  \bibliographystyle{plain}
+\section{El problema}
+
+Se plante\'o el problema como uan abstracci\'on de una gr\'afica que posee un significado geom\'etrico;
+es decir, esta vivir\'a en un mundo cartesiano (t\'orico, espec\'ificamente).
+
+La gr\'afica posee un arreglo de nodos y una matriz de adyacencias. Ambos poseyendo la ventaja de
+realizar b\'usquedas en tiempo constante (aprovechando el hecho de que no ser\'an de tama\~no
+variable durante la ejecuci\'on del algoritmo); el primero, abstrayendo los elementos como nodos
+que tienen coordenadas e identificador asociados; mientras que el segundo pretende acceder de
+manera r\'apida a las conexiones de la gr\'afica a partir de los indentificadores y donde dos
+v\'ertices $v_i$ y $v_j$ estar\'an conectados si hay un $1$ en la coordenada $(i, j)$ de la matriz
+(evitando abstracciones en estructuras, como en el primer caso).
+
+\section{Algoritmo de B\'usqueda Gravitacional}
+
+La heur\'istica se ejecuta a partir de un solo ciclo que verifica, en cada paso iterativo,
+si la funci\'on de costo (eval\'ua cu\'antos nodos tienen un color asociado) devuelve
+el n\'umero de nodos total. En adici\'on, contemplando el caso en el cual el n\'umero
+crom\'atico hipot\'etico sea menor al real, se cuenta con un n\'umero de iteraciones
+m\'aximas que previenen ejecuci\'on sin fin. Cabe destacar que si el algoritmo termina
+de esta \'ultima forma, la heur\'istica no habr\'a encontrado una soluci\'on para el
+problema.
+
+\chapter{Implementaci\'on}
+La implementaci\'on sigui\'o un modelo orientado a objetos (sin la inclusi\'on de herencia/
+polimorfismo) que pretende organizar, modularizar y facilitar el desarrollo y el mantenimiento
+del c\'odigo en el lenguaje de programaci\'on C.
+
+Cada una de los archivos representa una clase y contiene funciones asociadas a la misma,
+teniendo como par\'ametro al objeto en cuesti\'on.
+
+Las \texttt{structs} (estructuras) se definen dentro de los archivos de c\'odigo y no dentro
+de los encabezados. Esto con el fin de restringir el acceso a los elementos privados a los
+\textit{getters} y \textit{setters}, as\'i como la creaci\'on de objetos del mismo tipo,
+designando el trabajo a los constructores.
+
+\section{Problemas}
+La administraci\'on de memoria en un lenguaje de programaci\'on como C conlleva un orden m\'as
+severo que permite una menor abstracci\'on en su uso para gozar de una mayor eficiencia.
+
+Fugas de memoria estuvieron presentes, sobre todo en la devoluci\'on de apuntadores desde las
+funciones; se torna complicado administrar su uso y liberaci\'on al contar con una cantidad
+considerable de funciones de este tipo.
+
+\subsection{Generador de N\'umeros Aleatorios}
+En ciertos casos, en la generaci\'on de las coordenadas los colores de la gr\'afica
+se contaba con una repetici\'on en las coordenadas $x$ y $y$, algo singular, ya que
+hubo una invocaci\'on de la funci\'on $drand48\_r$\footnote{Se trata de una funci\'on
+  generadara de n\'umeros aleatorios que es compatible con la paralelizaci\'on del sistema;
+  a pesar de que esta no se haya implementado.} para cada una de ellas.
+Se revisar\'a con m\'as detalle y se espera corregir en un futuro pr\'oximo.
+
+\chapter{Experimentaci\'on}
+
+La experimentaci\'on se bas\'o en el uso de gr\'aficas predefinidas para el problema
+de coloraci\'on de gr\'aficas. Espec\'ificamente, se us\'o una gr\'afica de 300 nodos
+y 21695 aristas para la cual se tiene un n\'umero crom\'atico de 28. El algoritmo
+no fue capaz de
+
+\chapter{Conclusiones}
+
+\bibliography{ref}{}
+\bibliographystyle{plain}
 \end{document}

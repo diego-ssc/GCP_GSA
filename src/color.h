@@ -24,8 +24,9 @@
  * @param x the x coordinate.
  * @param y the y coordinate.
  * @param id the identifier.
+ * @param r the radius.
  */
-Color* color_new(double x, double y, int id);
+Color* color_new(double x, double y, int id, int r);
 
 /**
  * Frees the memory used by the color.

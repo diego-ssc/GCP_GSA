@@ -30,9 +30,10 @@
  * @param i the number of iterations.
  * @param c the comfort.
  * @param v verbose option.
+ * @param r the color radius.
  */
 GSA* gsa_new(char* file, long int seedval, int n_c, double d,
-             int i, int c, int v);
+             int i, int c, int v, int r);
 
 /**
  * Frees the memory used by the GSA.

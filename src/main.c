@@ -32,7 +32,8 @@ static void usage() {
           "\t-d\n\t\tthe graph dimension\n"
           "\t-i\n\t\tthe number of iterations\n"
           "\t-c\n\t\tthe comfort\n"
-          "\t-v\n\t\tverbose\n");
+          "\t-v\n\t\tverbose\n"
+          "\t-r\n\t\tthe color radius\n");
   exit(1);
 }
 
@@ -41,7 +42,7 @@ void parse_arguments(int argc, char** argv) {
   if (argc < 3)
     usage();
 
-  int n = 0, i = 0, c = 0, f = 0, v = 0;
+  int n = 0, i = 0, c = 0, f = 0, v = 0, r = 0;
   double d = 0;
   long int s = 0;
   char f_n[100];
@@ -67,6 +68,9 @@ void parse_arguments(int argc, char** argv) {
         case 'c':
           c = argc - 1 ? atoi(*(argv + 1)) : c;
           break;
+        case 'r':
+          r = argc - 1 ? atoi(*(argv + 1)) : r;
+          break;
         case 'v':
           v = 1;
           break;
@@ -82,7 +86,7 @@ void parse_arguments(int argc, char** argv) {
   if (!f)
     usage();
 
-  GSA* gsa = gsa_new(f_n, s, n, d, i, c, v);
+  GSA* gsa = gsa_new(f_n, s, n, d, i, c, v, r);
   printf("Solution found: %d\n", gsa_heuristic(gsa));
   gsa_free(gsa);
 }
