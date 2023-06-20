@@ -22,7 +22,7 @@ to compile the program.
 
 ## Usage:
 ```
-./GCP_GSA -f [input file] [options]
+./GCP_GSA -f [DIMACS input file] [options]
 ```
 # Options:
 ```
