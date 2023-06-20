@@ -209,15 +209,6 @@ int gsa_cost_function(GSA* gsa) {
 
 /* Computes the chromatic number. */
 int gsa_sol(GSA* gsa) {
-  /* int i, j, s = 0; */
-  /* for (i = 0; i < gsa->n; ++i) */
-  /*   for (j = 0; j < i; ++j) { */
-  /*     if (color_equals(agent_color(*(gsa->agents + j)), */
-  /*                      agent_color(*(gsa->agents + i)))) */
-  /*       continue; */
-  /*     if (j == i - 1) */
-  /*       s++; */
-  /*   } */
   int i, j, s = 0;
   for (i = 0; i < gsa->n_c; ++i)
     for (j = 0; j < gsa->n; ++j)
