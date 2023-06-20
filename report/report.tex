@@ -92,13 +92,13 @@ y, eventualmente, una mayor explotaci\'on.
 
 \begin{center}
   \textit{La inteligencia de enjambre es un modelo donde el comportamiento colectivo
-    emergente is el resultado de un proceso de organizaci\'on personal, donde los
+    emergente es el resultado de un proceso de organizaci\'on personal, donde los
     agentes est\'an envueltos, a trav\'es sus acciones repetidas e interacci\'on,
-    com su ambiente en evoluci\'on. ~\cite{israel}}
+    con su ambiente en evoluci\'on. ~\cite{israel}}
 \end{center}
 
 Modelos de este tipo son bastante populares; entre ellos se encuentran PSO (Eberhart
-and Kennedy, 1995), ACS (M. Dorigo and V. Maniezzo, 2008), etc\'etera.
+and Kennedy, 1995) y ACS (M. Dorigo and V. Maniezzo, 2008).
 
 En esta heur\'istica se plantea el uso de entes (soluciones) que
 se afectan m\'utuamente a trav\'es de fen\'omenos f\'isicos, siguiendo las leyes
@@ -118,7 +118,7 @@ Se define un conjunto de agentes
 
 \[B = \{b_1, b_2, ... b_N\}\]
 
-correspondientes a la cada nodo de la gr\'afica. Cada agente navegar\'a sobre un
+correspondientes a cada nodo de la gr\'afica. Cada agente navegar\'a sobre un
 mundo t\'orico \footnote{Un toro es \textit{la colecci\'on de todos los puntos
     $(x, y) \in \mathbb{R}^2$ bajo la relaci\'on de equivalencia $(x, y) \sim
     (a, b)$ cuando $x - a, y-b \in \mathbb{Z}$}~\cite{toroidal}} de acuerdo
@@ -130,10 +130,10 @@ Suponemos que queremos colorear la gr\'afica con $K$ colores, denotando
 como $C = \{1, 2, ..., K\}$ al conjunto de colores, donde $K$ no debe ser menor
 que el n\'umero crom\'atico asociado a la gr\'afica para que el algoritmo
 converja. Asignamos a estos colores, $K$ puntos en el espacio, los colores
-objetivo $CG = \{g_1, ..., g_K\}$, dotados de una atracci\'on gravitacional
+objetivo $CG = \{g_1, ..., g_K\}$ dotados de una atracci\'on gravitacional
 resultando en un componente de velocidad $\vec{v_{gc}}$ afectando a los agentes.
 La fuerza de atracci\'on disminuir\'a con la distancia, pero afectar\'a a todos
-los agenetes en el espacio.
+los agentes en el espacio.
 
 ~\cite{israel} define el sistema como una tupla:
 
@@ -229,7 +229,7 @@ parte de la soluci\'on al problema.
 
 Se destacan a la dimensi\'on del mundo y al radio de influencia de los colores
 objetivo como factores importantes para la determinaci\'on de la velocidad de
-convergencia del alforitmo. Si el mundo es grande y el radio peque\~no el
+convergencia del algoritmo. Si el mundo es grande y el radio peque\~no el
 algoritmo converger\'a lentamente, mon\'otonamente; si el mundo es reducido
 y el radio es grande el algoritmo ser\'a m\'as r\'apido pero la convergencia
 ser\'a inestable porque el algoritmo caer\'a en m\'inimos locales y necesitar\'a
@@ -242,17 +242,12 @@ Cuando todos los agentes se detienen, tenemos que $f(B, CG) = n$ y la asignaci\'
 de $K$ colores a la gr\'afica $G$ ha sido concluida exitosamente.
 
 \chapter{Dise\~no}
-A pesar de que inicialmente se sigui\'o como gu\'ia el algoritmo descrito en
+A pesar de que, inicialmente, se sigui\'o como gu\'ia el algoritmo descrito en
 ~\cite{gsa} (y la versi\'on discreta del mismo, en ~\cite{bgsa}), opt\'e por
 implementar la versi\'on dada en ~\cite{israel}; esto porque a pesar de
 no basarse en la descripci\'on original, donde el autor conceb\'ia a las soluciones
-como agentes que eran modificados y atra\'idos a otras soluciones a trav\'es
-de un modelo donde aquellas evaluadas positivamente por la funci\'on de costo
-eran capaces de atraer a una gran cantidad de las restantes; mientras que
-las soluciones que pod\'ian mejorar, no ten\'ian tal capacidad. Esto permit\'ia
-una gran exploraci\'on (derivado por su naturaleza de enjambre) que, a su vez,
-conlu\'ia con buenos resultados, dada su buena concepci\'on de la explotaci\'on;
-planteaba una algoritmo similar (siguiendo la misma \textit{meta idea}) pero
+como agentes que eran modificados y atra\'idos a otras soluciones, planteaba una
+algoritmo similar (siguiendo la misma \textit{meta idea}) pero
 ya estaba completamente adaptado a los t\'erminos que el problema de coloraci\'on
 de gr\'aficas requer\'ia.
 
@@ -273,10 +268,10 @@ las siguientes reglas de sintaxis.
 \begin{itemize}
 \item Un archivo de entrada contiene toda la informaci\'on de una gr\'afica no
   dirigida.
-\item Los nodes est\'an numeradas de $1$ a $n$ (siendo este el n\'umero total
+\item Los nodos est\'an numerados de $1$ a $n$ (siendo este el n\'umero total
   de nodos).
 \item Se asume que los archivos de entrada se encuentran en un estado l\'ogicamente
-  correcto i consistentes: los identificadores de los nodos son v\'alidos, los nodos
+  correcto y consistentes: los identificadores de los nodos son v\'alidos, los nodos
   son \'unicos y exactamente $m$ aristas son definidas.
 \item Los comentarios pueden aparecer en cualquier parte del archivo. Cada comentario
   comienza con el car\'acter \textit{c}.
@@ -322,7 +317,7 @@ La heur\'istica se ejecuta a partir de un solo ciclo que verifica, en cada paso 
 si la funci\'on de costo (eval\'ua cu\'antos nodos tienen un color asociado) devuelve
 el n\'umero de nodos total. En adici\'on, contemplando el caso en el cual el n\'umero
 crom\'atico hipot\'etico sea menor al real, se cuenta con un n\'umero de iteraciones
-m\'aximas que previenen ejecuci\'on sin fin. Cabe destacar que si el algoritmo termina
+m\'aximas que previenen una ejecuci\'on sin fin. Cabe destacar que si el algoritmo termina
 de esta \'ultima forma, la heur\'istica no habr\'a encontrado una soluci\'on para el
 problema.
 
@@ -351,13 +346,13 @@ considerable de funciones de este tipo.
 En ciertos casos, en la generaci\'on de las coordenadas los colores de la gr\'afica
 se contaba con una repetici\'on en las coordenadas $x$ y $y$, algo singular, ya que
 hubo una invocaci\'on de la funci\'on $drand48\_r$\footnote{Se trata de una funci\'on
-  generadara de n\'umeros aleatorios que es compatible con la paralelizaci\'on del sistema;
-  a pesar de que esta no se haya implementado.} para cada una de ellas.
+  generadora de n\'umeros aleatorios que es compatible con la paralelizaci\'on del sistema;
+  a pesar de que esta no se haya implementado en el sistema.} para cada una de ellas.
 Se revisar\'a con m\'as detalle y se espera corregir en un futuro pr\'oximo.
 
 \section{Par\'ametros}
 El programa se ejecuta en la l\'inea de comandos, recibiendo los par\'ametros de la misma
-a trav\'es como par\'ametros del programa y a la gr\'afica en un archivo con formato
+como par\'ametros del programa y a la gr\'afica en un archivo con formato
 DIMACS en un archivo de texto.
 
 \begin{center}
